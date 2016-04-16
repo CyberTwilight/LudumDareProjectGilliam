@@ -11,12 +11,14 @@ function player:load(game,x,y)
     o.y = y
     o.speed = 10
     o.game = game
+    o.game.world:add(o,o.x,o.y,o.w,o.h)
     return o
 end
 
 function player:move(x,y)
-    self.x = self.x + x*self.speed
-    self.y = self.y + y*self.speed
+    local dst_x = self.x + x*self.speed
+    local dst_y = self.y + y*self.speed
+    self.x,self.y = self.game.world:move(self, dst_x,dst_y)
 end
 function player:shoot()
     local angle = 0

@@ -1,8 +1,10 @@
 local player = require "src/player"
 local enemy = require "src/enemy"
 local cron = require "lib/cron"
+local bump = require "lib/bump"
 local game = {}
 function game.load()
+    game.world = bump.newWorld(10)
     local music = {bpm = 1,path = "assets/music.mp3"}
     game.spawn(cron.every(music.bpm,game.beat))
     local W,H = love.graphics.getDimensions()
