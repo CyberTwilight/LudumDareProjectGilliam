@@ -5,6 +5,7 @@ local game = require "src/game"
 local map = require "map/background"
 
 function love.load()
+    love.keyboard.setKeyRepeat( true )
     scenes = { intro = intro, menu = menu, game = game}
     change_scene("intro")
     map.load()

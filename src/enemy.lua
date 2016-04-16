@@ -18,7 +18,9 @@ end
 function enemy:beat()
 end
 function enemy:update(dt)
-    self.x = self.x - self.speed*dt
+    local dst_x = self.x - self.speed*dt
+    local dst_y = self.y
+    self.x,self.y = self.game.world:move(self, dst_x,dst_y)
 end
 
 function enemy:draw()

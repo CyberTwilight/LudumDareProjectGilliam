@@ -18,8 +18,9 @@ end
 function bullet:beat()
 end
 function bullet:update(dt)
-    self.x = self.x + math.cos(self.angle)*self.speed*dt
-    self.y = self.y + math.sin(self.angle)*self.speed*dt
+    local dst_x = self.x + math.cos(self.angle)*self.speed*dt
+    local dst_y = self.y + math.sin(self.angle)*self.speed*dt
+    self.x,self.y = self.game.world:move(self, dst_x,dst_y)
 end
 
 function bullet:draw()

@@ -11,4 +11,5 @@ function love.conf(t)
     
     --para debugging do Windows lembrar de mudar para false para o release
     t.console = true
+
   end
