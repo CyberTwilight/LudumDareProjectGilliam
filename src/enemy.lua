@@ -1,6 +1,6 @@
 
 local enemy = {}
-function enemy:load(x,y)
+function enemy:load(game,x,y)
     local o = {}
     setmetatable(o,self)
     self.__index = self
