@@ -1,5 +1,6 @@
 local player = require "src/player"
 local enemy = require "src/enemy"
+local map = require "src/background"
 local cron = require "lib/cron"
 local bump = require "lib/bump"
 local game = {}
@@ -9,6 +10,7 @@ function game.load()
     game.spawn(cron.every(music.bpm,game.beat))
     local W,H = love.graphics.getDimensions()
     game.floor = H*3/4
+    map.load()
     game.spawn(player:load(game,0,game.floor-10))
     game.wave(5)
 end
@@ -32,6 +34,7 @@ function game.beat()
 end
 
 function game.draw()
+    map.draw()
     foreach(game.objs,function(x) if x.draw then x:draw() end end)
 end
 return game
