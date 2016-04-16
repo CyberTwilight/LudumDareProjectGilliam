@@ -10,6 +10,6 @@ function galinha:move(x,y)
 end
 function galinha:shoot()
     local angle = 0
-    self.game.spawn(bullet:load(self.game,self.x,self.y,angle))
+    self.game.spawn(bullet:load(self.game,self.x+self.w,self.y,angle))
 end
 return galinha

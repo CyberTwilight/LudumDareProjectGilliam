@@ -8,6 +8,7 @@ function map.update(dt)
   
 end
 function map.draw()
+    love.graphics.setColor(255,255,255)
     love.graphics.draw(background,0,0)
     
     

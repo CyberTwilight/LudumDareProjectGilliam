@@ -6,6 +6,7 @@ function player:load(game,x,y)
     local o = {}
     setmetatable(o,self)
     self.__index = self
+    o.name = "player"
     o.color = {255,255,255}
     o.w = 50
     o.h = 50
@@ -37,6 +38,7 @@ function player:keypressed(key)
     if control[key] then control[key]() end
 end
 function player:update(dt)
+    self.transforms[self.transform]:update(dt)
 end
 function player:change(new)
     self.transform = new
@@ -45,8 +47,10 @@ end
 function player:beat()
     self:change(math.random(1,#self.transforms))
 end
+
 function player:draw()
     love.graphics.setColor(self.color)
     love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
+    self.transforms[self.transform]:draw()
 end
 return player

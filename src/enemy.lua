@@ -4,9 +4,10 @@ function enemy:load(game,x,y)
     local o = {}
     setmetatable(o,self)
     self.__index = self
-    
+    o.name = "enemy"
     o.w = 50
     o.h = 50
+    o.life = 2
     o.x = x
     o.y = y
     o.speed = 10
@@ -16,6 +17,18 @@ function enemy:load(game,x,y)
     return o
 end
 function enemy:beat()
+end
+function enemy:die()
+    self.game.world:remove(self)
+    self = nil
+end
+function enemy:hit(o)
+    if o.name == "bullet" then
+        self.life = self.life - 1
+        if self.life <= 0 then
+--            self:die()
+        end
+    end
 end
 function enemy:update(dt)
     local dst_x = self.x - self.speed*dt

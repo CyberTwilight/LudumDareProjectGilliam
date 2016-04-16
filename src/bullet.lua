@@ -4,6 +4,7 @@ function bullet:load(game,x,y,angle)
     setmetatable(o,self)
     self.__index = self
     
+    o.name = "bullet"
     o.w = 10
     o.h = 10
     o.x = x
@@ -17,10 +18,27 @@ function bullet:load(game,x,y,angle)
 end
 function bullet:beat()
 end
+function bullet:die()
+    --self.game.world:remove(self)
+    --self = nil
+end
 function bullet:update(dt)
     local dst_x = self.x + math.cos(self.angle)*self.speed*dt
     local dst_y = self.y + math.sin(self.angle)*self.speed*dt
-    self.x,self.y = self.game.world:move(self, dst_x,dst_y)
+    local cols = {}
+    self.x,self.y,cols= self.game.world:move(self, dst_x,dst_y)
+    local dead = false
+    for k,v in ipairs(cols) do
+        if v.other.hit then
+            v.other:hit(self)
+        end
+        if v.other.name =="enemy" then 
+            dead = true
+        end
+    end
+    if dead then
+        self:die()
+    end
 end
 
 function bullet:draw()
