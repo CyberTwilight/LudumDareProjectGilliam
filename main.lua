@@ -1,3 +1,4 @@
+local utils = require "src/utils"
 local intro = require "src/intro"
 local menu = require "src/menu"
 local game = require "src/game"
