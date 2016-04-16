@@ -4,25 +4,24 @@ function player:load(game,x,y)
     local o = {}
     setmetatable(o,self)
     self.__index = self
-    
+    o.color = {255,255,255}
     o.w = 50
     o.h = 50
     o.x = x
     o.y = y
     o.speed = 10
     o.game = game
+    o.transforms = {require"src/transform_normal",require"src/transform_galinha"}--,require"transform_perneta"}
     o.game.world:add(o,o.x,o.y,o.w,o.h)
+    o:change(1)
     return o
 end
 
 function player:move(x,y)
-    local dst_x = self.x + x*self.speed
-    local dst_y = self.y + y*self.speed
-    self.x,self.y = self.game.world:move(self, dst_x,dst_y)
+    self.transforms[self.transform].move(self,x,y)
 end
 function player:shoot()
-    local angle = 0
-    self.game.spawn(bullet:load(self.game,self.x,self.y,angle))
+    self.transforms[self.transform].shoot(self)
 end
 
 function player:keypressed(key)
@@ -37,9 +36,15 @@ function player:keypressed(key)
 end
 function player:update(dt)
 end
-
+function player:change(new)
+    self.transform = new
+    self.transforms[self.transform].load(self)
+end
+function player:beat()
+    self:change(math.random(1,#self.transforms))
+end
 function player:draw()
-    love.graphics.setColor({255,255,255})
+    love.graphics.setColor(self.color)
     love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
 end
 return player
