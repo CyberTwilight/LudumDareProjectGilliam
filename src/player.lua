@@ -1,4 +1,6 @@
 local bullet = require "src/bullet"
+local anim8 = require "lib/anim8"
+    
 local player = {}
 function player:load(game,x,y)
     local o = {}
