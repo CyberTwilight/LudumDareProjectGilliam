@@ -13,7 +13,9 @@ end
 function love.update(dt)
     scenes[scene].update(dt)
 end
-
+function love.keypressed(key)
+    scenes[scene].keypressed(key)
+end
 function love.draw()
     scenes[scene].draw()
 end

@@ -8,25 +8,24 @@ function player:load(x,y)
     o.h = 50
     o.x = x
     o.y = y
-    
+    o.speed = 10
+
     return o
 end
 
 function player:move(x,y)
-
-end
-function player:jump()
-
+    self.x = self.x + x*self.speed
+    self.y = self.y + y*self.speed
 end
 
 function player:keypressed(key)
     local control ={
         a = function() self:move(-1,0) end,
-        w = function() self:jump() end,
-        --s = function() self:move(0,1) end,
+        w = function() self:move(0,-1) end,
+        s = function() self:move(0,1) end,
         d = function() self:move(1,0) end
     }
-    control[key]()
+    if control[key] then control[key]() end
 end
 function player:update(dt)
 end

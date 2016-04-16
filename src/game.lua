@@ -1,7 +1,6 @@
 local player = require "src/player"
 local enemy = require "src/enemy"
 local cron = require "lib/cron"
-local hx = require "lib/hxdx/hxdx"
 local game = {}
 function game.load()
     local num_enemies = 5
@@ -9,7 +8,6 @@ function game.load()
     game.spawn(cron.every(music.bpm,game.beat))
     local W,H = love.graphics.getDimensions()
     local floor = H*3/4
-    --game.floor = wall:load(0,floor)
     game.spawn(player:load(0,floor-10))
     for i=1,num_enemies do
         game.spawn(enemy:load(400+60*i,floor-10))
@@ -23,7 +21,9 @@ end
 function game.update(dt)
     foreach(game.objs,function(x) if x.update then x:update(dt) end end)
 end
-
+function game.keypressed(key)
+    foreach(game.objs,function(x) if x.keypressed then x:keypressed(key) end end)
+end
 function game.beat()
     foreach(game.objs,function(x) if x.beat then x:beat() end end)
 end
