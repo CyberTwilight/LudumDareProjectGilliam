@@ -7,8 +7,9 @@ function player:load(game,x,y)
     setmetatable(o,self)
     self.__index = self
     o.color = {255,255,255}
-    o.w = 50
-    o.h = 50
+    o.testsprite = love.graphics.newImage("assets/ManoBizonhoExemplo.png")
+    o.w = o.testsprite:getWidth()
+    o.h = o.testsprite:getHeight()
     o.x = x
     o.y = y
     o.speed = 10
@@ -16,6 +17,10 @@ function player:load(game,x,y)
     o.transforms = {require"src/transform_normal",require"src/transform_galinha"}--,require"transform_perneta"}
     o.game.world:add(o,o.x,o.y,o.w,o.h)
     o:change(1)
+    o.playersheetWalk = love.graphics.newImage('assests/playersheet1.png')
+    local playeranimeWalk = anim8.newGrid(201, 278, self.playersheetWalk:getWidth(), self.playersheetWalkgetHeight())
+    Walkanimation = anim8.newAnimation(g('1-28',1), 1/28)
+    
     return o
 end
 
@@ -37,6 +42,8 @@ function player:keypressed(key)
     if control[key] then control[key]() end
 end
 function player:update(dt)
+  
+Walkanimation:update(dt)
 end
 function player:change(new)
     self.transform = new
@@ -46,7 +53,9 @@ function player:beat()
     self:change(math.random(1,#self.transforms))
 end
 function player:draw()
+    love.graphics.print(self.w,100,100)
+    love.graphics.draw(self.testsprite,self.x,self.y)
     love.graphics.setColor(self.color)
-    love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
+    love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
 end
 return player
