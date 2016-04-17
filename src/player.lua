@@ -15,7 +15,7 @@ function player:load(game,x,y)
     o.y = y
     o.speed = 10
     o.game = game
-    o.transforms = {require"src/transform_normal",require"src/transform_galinha"}--,require"transform_perneta"}
+    o.transforms = {require"src/transform_normal",require"src/transform_galinha",require"src/transform_perneta"}
     o.game.world:add(o,o.x,o.y,o.w,o.h)
     o:change(1)
     

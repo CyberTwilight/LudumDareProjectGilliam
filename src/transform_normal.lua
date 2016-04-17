@@ -8,7 +8,7 @@ function normal:load()
     playersheetWalk = love.graphics.newImage('assets/playersheet1.png')
     local playeranimeWalk = anim8.newGrid(201, 278, playersheetWalk:getWidth(), playersheetWalk:getHeight())
     Walkanimation = anim8.newAnimation(playeranimeWalk('1-7','1-4'), 1/28)
-    
+  
 end
 
 function normal:update(dt)
