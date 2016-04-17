@@ -24,12 +24,8 @@ function player:load(game,x,y,playeraim)
     o.scalex = o.w/o.sprite_w
     o.scaley = o.h/o.sprite_h
     o.x = x
-<<<<<<< HEAD
     o.y = y-o.h
-=======
-    o.y = y
     o.aim = playeraim
->>>>>>> 7a2e3131bf74301dd677ed50937aedc745b1bd52
     o.speed = 10
     o.cooldown = 0.5
     o.cooldown_var = false
