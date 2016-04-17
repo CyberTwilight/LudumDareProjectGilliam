@@ -9,8 +9,8 @@ function player:load(game,x,y)
     self.__index = self
     o.name = "player"
     o.color = {255,255,255}
-    o.w = 50
-    o.h = 50
+    o.w = 201
+    o.h = 278
     o.x = x
     o.y = y
     o.speed = 10
@@ -18,6 +18,10 @@ function player:load(game,x,y)
     o.transforms = {require"src/transform_normal",require"src/transform_galinha"}--,require"transform_perneta"}
     o.game.world:add(o,o.x,o.y,o.w,o.h)
     o:change(1)
+    
+    o.playersheetWalk = love.graphics.newImage('assets/playersheet1.png')
+    local playeranimeWalk = anim8.newGrid(201, 278, playersheetWalk:getWidth(), playersheetWalk:getHeight())
+    o.Walkanimation = anim8.newAnimation(playeranimeWalk('1-7','1-4'), 1/28)
     
     return o
 end
@@ -63,6 +67,7 @@ function player:update(dt)
       if control[key] then control[key]() end 
     end    
     
+    self.Walkanimation:update(dt)
     --self.transforms[self.transform]:update(dt)
 end
 function player:change(new)
@@ -74,8 +79,11 @@ function player:beat()
 end
 
 function player:draw()
+    self.Walkanimation:draw(self.playersheetWalk, self.x,self.y, 0, 1, 1, 0, 0)
     love.graphics.setColor(self.color)
-    love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
+    love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
+    
+    
     --self.transforms[self.transform]:draw()
 end
 return player
