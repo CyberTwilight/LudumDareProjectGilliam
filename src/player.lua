@@ -16,6 +16,7 @@ function player:load(game,x,y)
     o.speed = 10
     o.cooldown = 0.5
     o.cooldown_var = false
+    o.beats = 1
     o.game = game
     o.keylist = {}
     o.transforms = {require"src/transform_normal",require"src/transform_galinha",require"src/transform_perneta"}
@@ -84,7 +85,11 @@ function player:change(new)
     self.transforms[self.transform].load(self)
 end
 function player:beat()
-    self:change(math.random(1,#self.transforms))
+    self.beats = self.beats + 1
+    if self.beats == 8 then
+        self:change(math.random(1,#self.transforms))
+        self.beats = 1
+    end
 end
 
 function player:draw()

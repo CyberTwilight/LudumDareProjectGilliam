@@ -5,9 +5,11 @@ local cron = require "lib/cron"
 local bump = require "lib/bump"
 local game = {}
 function game.load()
+    local music = {bpm = 124,path = "assets/music.mp3",offset = 1}
+    local song = love.audio.newSource(music.path)
+    song:play()
     game.world = bump.newWorld(10)
-    local music = {bpm = 1,path = "assets/music.mp3"}
-    game.spawn(cron.every(music.bpm,game.beat))
+    game.spawn(cron.after(music.offset, game.spawn, cron.every(1/(music.bpm/60),game.beat)))
     local W,H = love.graphics.getDimensions()
     game.floor = H*3/4
     map.load()
