@@ -56,7 +56,15 @@ function player:shoot()
     else
       angle = math.atan2(self.aim.y - (self.y + 50), (self.aim.x-10) - self.x)
     end
-    print(self.aim.y, (self.y + 50), angle)
+    
+    --print(self.aim.y, (self.y + 50), angle)
+    
+    if math.abs(angle) > 1.5708 then
+      self.dir = -1
+    else
+      self.dir = 1
+    end
+  
     if not self.cooldown_var then
         self.transforms[self.transform].shoot(self, angle)
         self.cooldown_var  = true
@@ -129,9 +137,9 @@ function player:draw()
     love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
     
     if self.dir == 1 then -- marcacao da arma
-    love.graphics.circle("fill",self.x + self.w,self.y + 50, 25)
+    love.graphics.circle("fill",self.x + self.w,self.y + 50, 10)
   else
-    love.graphics.circle("fill",self.x,self.y + 50, 25)
+    love.graphics.circle("fill",self.x,self.y + 50, 10)
     end
     
     

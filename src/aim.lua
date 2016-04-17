@@ -15,7 +15,7 @@ function aim:load(game,x,y)
   
     o.name = "aim"
     o.color = {255,0,0}
-    o.r = 25
+    o.r = 15
     o.x = x
     o.y = y
     o.game = game
@@ -37,5 +37,10 @@ function aim:draw()
     love.graphics.setColor(self.color)
     love.graphics.circle("line", self.x, self.y, self.r, self.r *2)
     love.graphics.circle("line", self.x, self.y, self.r/2, self.r)
+    
+    love.graphics.line(self.x - self.r, self.y,  self.x + self.r, self.y)
+    love.graphics.line(self.x, self.y - self.r,  self.x, self.y + self.r)
+    
+    
 end
 return aim
