@@ -34,8 +34,7 @@ function player:shoot()
 end
 
 function player:keypressed(key)
-   addToSet(player.keylist, key)
-   
+   addToSet(player.keylist, key)   
 end
 
 function player:keyreleased(key)
