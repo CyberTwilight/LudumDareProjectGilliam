@@ -14,11 +14,23 @@ function game.load()
     game.floor = H*3/4
     map.load()
     game.spawn(player:load(game,0,game.floor-10))
-    game.wave(5)
+    game.enemy_count = 0
+    game.waves = {5,10,15}
+    game.curr_wave = 1
+    game.next_wave()
+end
+function game.next_wave()
+    if game.waves[game.curr_wave] then
+        game.wave(game.waves[game.curr_wave])
+        game.curr_wave = game.curr_wave + 1
+    else
+        change_scene("victory")
+    end
 end
 function game.wave(num_enemies)
     for i=1,num_enemies do
         game.spawn(enemy:load(game,400+60*i,game.floor-10))
+        game.enemy_count = game.enemy_count + 1
     end
 end
 function game.spawn(obj)
@@ -28,12 +40,18 @@ end
 function game.remove(obj)
     for k,v in pairs(game.objs) do
         if obj == v then 
+            if obj.name == "enemy" then
+                game.enemy_count = game.enemy_count - 1
+            end
             game.objs[k] = nil 
         end 
     end
 end
 
 function game.update(dt)
+    if game.enemy_count == 0 then
+        game.next_wave()
+    end
     foreach(game.objs,function(x) if x.update then x:update(dt) end end)
 end
 function game.keypressed(key)
