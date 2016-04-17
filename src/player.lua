@@ -18,8 +18,12 @@ function player:load(game,x,y,playeraim)
     o.name = "player"
     o.color = {255,255,255}
     o.dir = 1
-    o.w = 201
-    o.h = 278
+    o.w = game.W/12
+    o.h = game.H/6
+    o.sprite_w = 201
+    o.sprite_h = 278
+    o.scalex = o.w/o.sprite_w
+    o.scaley = o.h/o.sprite_h
     o.x = x
     o.y = y
     o.aim = playeraim
@@ -34,7 +38,7 @@ function player:load(game,x,y,playeraim)
     o:change(1)
     
     o.playersheetWalk = love.graphics.newImage('assets/playersheet1.png')
-    local playeranimeWalk = anim8.newGrid(201, 278, playersheetWalk:getWidth(), playersheetWalk:getHeight())
+    local playeranimeWalk = anim8.newGrid(o.sprite_w,o.sprite_h, playersheetWalk:getWidth(), playersheetWalk:getHeight())
     o.Walkanimation = anim8.newAnimation(playeranimeWalk('1-7','1-4'), 1/28)
     
     return o
@@ -117,9 +121,9 @@ end
 
 function player:draw()
     if self.dir == 1 then
-        self.Walkanimation:draw(self.playersheetWalk, self.x,self.y, 0, 1, 1, 0, 0,0,0)
+        self.Walkanimation:draw(self.playersheetWalk, self.x,self.y, 0, self.scalex, self.scaley, 0, 0,0,0)
     else
-        self.Walkanimation:draw(self.playersheetWalk, self.x+self.w,self.y, 0, self.dir*1, 1, 0, 0,0,0)
+        self.Walkanimation:draw(self.playersheetWalk, self.x+self.w,self.y, 0, self.dir*self.scalex, self.scaley, 0, 0,0,0)
     end
     love.graphics.setColor(self.color)
     love.graphics.rectangle("line",self.x,self.y,self.w,self.h)

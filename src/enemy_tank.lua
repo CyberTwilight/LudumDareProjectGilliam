@@ -1,3 +1,4 @@
+
 local anim8 = require "lib/anim8"
 local cron = require "lib/cron"
 
@@ -8,8 +9,8 @@ function enemy:load(game,x,y,dir)
     self.__index = self
     
     o.name = "enemy"
-    o.w = game.W/12
-    o.h = game.H/6
+    o.w = game.W/6
+    o.h = game.H/3
     o.dir = dir
     o.life = 2
     o.hit_var = false
@@ -48,19 +49,13 @@ function enemy:hit(o)
         end
     end
 end
-local Filter = function(item, other)
-  if other.name == "player"   then return 'touch'
-  elseif other.name == "enemy"   then return 'cross'
-  end
-  -- else return nil  
-end
 function enemy:update(dt)
     if self.hit_timer then
         self.hit_timer:update(dt)
     end
     local dst_x = self.x - self.dir*self.speed*dt
     local dst_y = self.y
-    self.x,self.y = self.game.world:move(self, dst_x,dst_y,Filter)
+    self.x,self.y = self.game.world:move(self, dst_x,dst_y)
     --self.Walkanimation:update(dt)
 end
 

@@ -1,5 +1,6 @@
 local player = require "src/player"
-local enemy = require "src/enemy"
+local soldier = require "src/enemy"
+local tank = require "src/enemy_tank"
 local map = require "src/background"
 local cron = require "lib/cron"
 local bump = require "lib/bump"
@@ -22,7 +23,7 @@ function game.load()
     game.enemy_count = 0
     game.spawn_rate = 0.5
     game.wave_rate = 1
-    game.waves = {5,10,15}
+    game.waves = {{5,0},{10,1},{15,3},{20,5},{25,10}}
     game.curr_wave = 1
     game.next_wave()
     
@@ -30,26 +31,28 @@ function game.load()
 end
 function game.next_wave()
     if game.waves[game.curr_wave] then
-        game.wave(game.waves[game.curr_wave])
+        game.wave(game.waves[game.curr_wave][1],soldier)
+        game.wave(game.waves[game.curr_wave][2],tank)
         game.curr_wave = game.curr_wave + 1
     else
         print "victory"
         --change_scene("victory")
     end
 end
-function game.create_enemy()
+function game.create_enemy(typ)
     local dice = math.random()
     if dice < 0.5 then
-        game.spawn(enemy:load(game,game.W,game.floor-10,1))
+        game.spawn(typ:load(game,game.W,game.floor-10,1))
     else
-        game.spawn(enemy:load(game,0,game.floor-10,-1))
+        game.spawn(typ:load(game,0,game.floor-10,-1))
     end
     game.enemy_count = game.enemy_count + 1
 end
-function game.wave(num_enemies)
-    for i=1,num_enemies do
-        game.spawn(cron.after(game.spawn_rate,game.create_enemy))
+function game.wave(num_enemies,typ)
+    if num_enemies > 0 then
+        game.create_enemy(typ)
     end
+    game.spawn(cron.after(game.spawn_rate,game.wave,num_enemies-1,typ))
 end
 function game.spawn(obj)
     game.objs = game.objs or {}
