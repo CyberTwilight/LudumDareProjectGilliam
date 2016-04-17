@@ -8,8 +8,7 @@ function galinha:move(x,y)
     local dst_y = self.y + y*self.speed
     self.x,self.y = self.game.world:move(self, dst_x,dst_y)
 end
-function galinha:shoot()
-    local angle = 0
+function galinha:shoot(angle)
     self.game.spawn(bullet:load(self.game,self.x+self.w,self.y,angle))
 end
 return galinha

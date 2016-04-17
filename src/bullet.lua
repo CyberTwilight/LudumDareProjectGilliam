@@ -5,7 +5,7 @@ local bulletFilter = function(item, other)
   elseif other.isPlayer   then return 'cross'
   elseif other.isEnemy   then return 'slide'
   end
-  -- else return nil
+  -- else return nil  
 end
 
 function bullet:load(game,x,y,angle)
@@ -16,7 +16,7 @@ function bullet:load(game,x,y,angle)
     o.name = "bullet"
     o.w = 10
     o.h = 10
-    o.x = x + 40
+    o.x = x
     o.y = y + 50
     o.angle = angle
     o.speed = 100

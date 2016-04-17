@@ -30,7 +30,8 @@ function player:move(x,y)
     self.transforms[self.transform].move(self,x,y)
 end
 function player:shoot()
-    self.transforms[self.transform].shoot(self)
+    local angle = 270 -- calcular o coeficiente angular entre o mouse e o player
+    self.transforms[self.transform].shoot(self, angle)
 end
 
 function player:keypressed(key)
