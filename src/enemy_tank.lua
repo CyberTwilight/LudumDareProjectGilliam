@@ -3,6 +3,15 @@ local anim8 = require "lib/anim8"
 local cron = require "lib/cron"
 
 local enemy = {}
+
+local enemyFilter = function(item, other)
+  if other.name == "player"   then return 'touch'
+  elseif other.name == "enemy"   then return 'touch'
+  elseif other.name == "aim"   then return 'cross'
+  end
+  -- else return nil  
+end
+
 function enemy:load(game,x,y,dir)
     local o = {}
     setmetatable(o,self)
@@ -55,7 +64,7 @@ function enemy:update(dt)
     end
     local dst_x = self.x - self.dir*self.speed*dt
     local dst_y = self.y
-    self.x,self.y = self.game.world:move(self, dst_x,dst_y)
+    self.x,self.y = self.game.world:move(self, dst_x,dst_y,enemyFilter)
     --self.Walkanimation:update(dt)
 end
 

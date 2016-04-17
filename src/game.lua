@@ -4,6 +4,8 @@ local tank = require "src/enemy_tank"
 local map = require "src/background"
 local cron = require "lib/cron"
 local bump = require "lib/bump"
+local aim = require "src/aim"
+
 local game = {}
 function game.load()
     local music = {bpm = 124,path = "assets/music.mp3",offset = 1}
@@ -16,13 +18,18 @@ function game.load()
     game.roof = 3*game.H/4
     game.play_area = game.floor - game.roof
     map.load()
-    game.spawn(player:load(game,game.W/2,game.floor-10))
+    
+    playeraim = aim:load(game, game.W/2,game.H/2) 
+    game.spawn(player:load(game,game.W/2,game.floor-10, playeraim))
+    game.spawn(playeraim)
     game.enemy_count = 0
     game.spawn_rate = 0.5
     game.wave_rate = 1
     game.waves = {{5,0},{10,1},{15,3},{20,5},{25,10}}
     game.curr_wave = 1
     game.next_wave()
+    
+    
 end
 function game.next_wave()
     if game.waves[game.curr_wave] then
@@ -82,6 +89,9 @@ end
 function game.mousereleased( x, y, button, istouch )
   foreach(game.objs,function(o) if o.mousereleased then o:mousereleased(x, y, button, istouch) end end)
 end  
+function game.mousemoved( x, y, dx, dy )
+  foreach(game.objs,function(o) if o.mousemoved then o:mousemoved( x, y, dx, dy ) end end)
+end
 function game.beat()
     foreach(game.objs,function(x) if x.beat then x:beat() end end)
 end

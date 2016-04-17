@@ -1,8 +1,16 @@
 local anim8 = require "lib/anim8"
 local cron = require "lib/cron"
-
 local player = {}
-function player:load(game,x,y)
+
+local playerFilter = function(item, other)
+  if     other.name == "bullet"   then return 'cross'
+  elseif other.name == "aim"   then return 'cross'
+  elseif other.name == "enemy"   then return 'touch'
+  end
+  -- else return nil  
+end
+
+function player:load(game,x,y,playeraim)
     local o = {}
     setmetatable(o,self)
     self.__index = self
@@ -16,7 +24,12 @@ function player:load(game,x,y)
     o.scalex = o.w/o.sprite_w
     o.scaley = o.h/o.sprite_h
     o.x = x
+<<<<<<< HEAD
     o.y = y-o.h
+=======
+    o.y = y
+    o.aim = playeraim
+>>>>>>> 7a2e3131bf74301dd677ed50937aedc745b1bd52
     o.speed = 10
     o.cooldown = 0.5
     o.cooldown_var = false
@@ -34,33 +47,48 @@ function player:load(game,x,y)
     return o
 end
 
-function player:move(x,y)
-    self.transforms[self.transform].move(self,x,y)
+function player:move(x,y)  
+    self.transforms[self.transform].move(self,x,y, playerFilter)
 end
 function player:shoot()
     --local angle = 0--270 -- calcular o coeficiente angular entre o mouse e o player
+    local angle = 0
+    
+    if self.dir == 1 then
+      angle = math.atan2(self.aim.y - (self.y + 50), self.aim.x - (self.x + self.w))
+    else
+      angle = math.atan2(self.aim.y - (self.y + 50), (self.aim.x-10) - self.x)
+    end
+    
+    --print(self.aim.y, (self.y + 50), angle)
+    
+    if math.abs(angle) > 1.5708 then
+      self.dir = -1
+    else
+      self.dir = 1
+    end
+  
     if not self.cooldown_var then
-        self.transforms[self.transform].shoot(self)
+        self.transforms[self.transform].shoot(self, angle)
         self.cooldown_var  = true
         self.cooldown_timer = cron.after(self.cooldown,function() self.cooldown_var = false end)
     end
 end
 
 function player:keypressed(key)
-   addToSet(self.keylist, key)   
+   if key ~= nil then addToSet(self.keylist, key) end
 end
 
 function player:keyreleased(key)
-    removeFromSet(self.keylist, key)
+    if key ~= nil then removeFromSet(self.keylist, key) end
 end
 
 function player:mousepressed(x, y, button, istouch)
-   addToSet(self.keylist, "m"..button)
-   
+    if button ~= nil then addToSet(self.keylist, "m"..button) end
 end
 
 function player:mousereleased(x, y, button, istouch)
-    removeFromSet(self.keylist, "m"..button)
+    if button ~= nil then removeFromSet(self.keylist, "m"..button) end
 end
 
 function player:update(dt)
@@ -80,7 +108,7 @@ function player:update(dt)
             self:move(speed,0) 
         end,
         space = function() self:shoot() end,
-        m1 = function() self:shoot()end
+        m1 = function() self:shoot() end
     }
     
     for key,v in pairs(self.keylist) do
@@ -110,6 +138,12 @@ function player:draw()
     end
     love.graphics.setColor(self.color)
     love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
+    
+    if self.dir == 1 then -- marcacao da arma
+    love.graphics.circle("fill",self.x + self.w,self.y + 50, 10)
+  else
+    love.graphics.circle("fill",self.x,self.y + 50, 10)
+    end
     
     
     --self.transforms[self.transform]:draw()
