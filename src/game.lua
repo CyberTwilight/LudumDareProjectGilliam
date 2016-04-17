@@ -23,6 +23,14 @@ function game.spawn(obj)
     game.objs = game.objs or {}
     table.insert(game.objs,obj)
 end
+function game.remove(obj)
+    for k,v in pairs(game.objs) do
+        if obj == v then 
+            game.objs[k] = nil 
+        end 
+    end
+end
+
 function game.update(dt)
     foreach(game.objs,function(x) if x.update then x:update(dt) end end)
 end

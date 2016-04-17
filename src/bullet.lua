@@ -1,9 +1,9 @@
 local bullet = {}
 
 local bulletFilter = function(item, other)
-  if     other.isBullet   then return 'cross'
-  elseif other.isPlayer   then return 'cross'
-  elseif other.isEnemy   then return 'slide'
+  if     other.name == "bullet"   then return 'cross'
+  --elseif other.name == "player"   then return 'cross'
+  elseif other.name == "enemy"   then return 'touch'
   end
   -- else return nil  
 end
@@ -28,18 +28,21 @@ end
 function bullet:beat()
 end
 function bullet:die()
-    --self.game.world:remove(self)
+    if self.game.world:hasItem(self) then
+        self.game.world:remove(self)
+    end
+    self.game.remove(self)
     --self = nil
 end
 function bullet:update(dt)
     local dst_x = self.x + math.cos(self.angle)*self.speed*dt
     local dst_y = self.y + math.sin(self.angle)*self.speed*dt
     local cols = {}
-    self.x,self.y,cols= self.game.world:move(self, dst_x,dst_y, bulletFilter)
+    self.x,self.y,cols= self.game.world:move(self, dst_x,dst_y)--, bulletFilter)
     local dead = false
     for k,v in ipairs(cols) do
         if v.other.hit then
-            v.other:hit(self)
+            v.other.hit(v.other,self)
         end
         if v.other.name =="enemy" then 
             dead = true

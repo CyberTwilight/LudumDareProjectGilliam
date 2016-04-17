@@ -1,8 +1,8 @@
 local bullet = require "src/bullet"
 local anim8 = require "lib/anim8"
-    
+local cron = require "lib/cron"
+
 local player = {}
-player.keylist = {}
 function player:load(game,x,y)
     local o = {}
     setmetatable(o,self)
@@ -14,7 +14,10 @@ function player:load(game,x,y)
     o.x = x
     o.y = y
     o.speed = 10
+    o.cooldown = 0.5
+    o.cooldown_var = false
     o.game = game
+    o.keylist = {}
     o.transforms = {require"src/transform_normal",require"src/transform_galinha",require"src/transform_perneta"}
     o.game.world:add(o,o.x,o.y,o.w,o.h)
     o:change(1)
@@ -30,29 +33,35 @@ function player:move(x,y)
     self.transforms[self.transform].move(self,x,y)
 end
 function player:shoot()
-    local angle = 270 -- calcular o coeficiente angular entre o mouse e o player
-    self.transforms[self.transform].shoot(self, angle)
+    local angle = 0--270 -- calcular o coeficiente angular entre o mouse e o player
+    if not self.cooldown_var then
+        self.transforms[self.transform].shoot(self, angle)
+        self.cooldown_var  = true
+        self.cooldown_timer = cron.after(self.cooldown,function() self.cooldown_var = false end)
+    end
 end
 
 function player:keypressed(key)
-   addToSet(player.keylist, key)   
+   addToSet(self.keylist, key)   
 end
 
 function player:keyreleased(key)
-    removeFromSet(player.keylist, key)
+    removeFromSet(self.keylist, key)
 end
 
 function player:mousepressed(x, y, button, istouch)
-   addToSet(player.keylist, "m"..button)
+   addToSet(self.keylist, "m"..button)
    
 end
 
 function player:mousereleased(x, y, button, istouch)
-    removeFromSet(player.keylist, "m"..button)
+    removeFromSet(self.keylist, "m"..button)
 end
 
 function player:update(dt)
-  
+  if self.cooldown_timer then
+      self.cooldown_timer:update(dt)
+  end
   local speed = dt * 10
     local control ={
         a = function() self:move(-speed,0) end,
@@ -63,7 +72,7 @@ function player:update(dt)
         m1 = function() self:shoot()end
     }
     
-    for key,v in pairs(player.keylist) do
+    for key,v in pairs(self.keylist) do
       if control[key] then control[key]() end 
     end    
     
