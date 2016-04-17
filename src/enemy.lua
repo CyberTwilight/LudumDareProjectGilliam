@@ -2,7 +2,7 @@ local anim8 = require "lib/anim8"
 local cron = require "lib/cron"
 
 local enemy = {}
-function enemy:load(game,x,y)
+function enemy:load(game,x,y,dir)
     local o = {}
     setmetatable(o,self)
     self.__index = self
@@ -10,6 +10,7 @@ function enemy:load(game,x,y)
     o.name = "enemy"
     o.w = 50
     o.h = 50
+    o.dir = dir
     o.life = 2
     o.hit_var = false
     o.x = x
@@ -51,7 +52,7 @@ function enemy:update(dt)
     if self.hit_timer then
         self.hit_timer:update(dt)
     end
-    local dst_x = self.x - self.speed*dt
+    local dst_x = self.x - self.dir*self.speed*dt
     local dst_y = self.y
     self.x,self.y = self.game.world:move(self, dst_x,dst_y)
     --self.Walkanimation:update(dt)

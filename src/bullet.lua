@@ -19,7 +19,7 @@ function bullet:load(game,x,y,angle)
     o.x = x
     o.y = y + 50
     o.angle = angle
-    o.speed = 100
+    o.speed = 200
     o.color = {math.random(0,100),math.random(0,255),math.random(0,100)}
     o.game = game 
     o.game.world:add(o,o.x,o.y,o.w,o.h)

@@ -9,6 +9,7 @@ function player:load(game,x,y)
     self.__index = self
     o.name = "player"
     o.color = {255,255,255}
+    o.dir = 1
     o.w = 201
     o.h = 278
     o.x = x
@@ -34,9 +35,9 @@ function player:move(x,y)
     self.transforms[self.transform].move(self,x,y)
 end
 function player:shoot()
-    local angle = 0--270 -- calcular o coeficiente angular entre o mouse e o player
+    --local angle = 0--270 -- calcular o coeficiente angular entre o mouse e o player
     if not self.cooldown_var then
-        self.transforms[self.transform].shoot(self, angle)
+        self.transforms[self.transform].shoot(self)
         self.cooldown_var  = true
         self.cooldown_timer = cron.after(self.cooldown,function() self.cooldown_var = false end)
     end
@@ -65,10 +66,16 @@ function player:update(dt)
   end
   local speed = dt * 10
     local control ={
-        a = function() self:move(-speed,0) end,
+        a = function() 
+            self.dir = -1
+            self:move(-speed,0) 
+        end,
         w = function() self:move(0,-speed) end,
         s = function() self:move(0,speed) end,
-        d = function() self:move(speed,0) end,
+        d = function() 
+            self.dir = 1
+            self:move(speed,0) 
+        end,
         space = function() self:shoot() end,
         m1 = function() self:shoot()end
     }
@@ -93,7 +100,11 @@ function player:beat()
 end
 
 function player:draw()
-    self.Walkanimation:draw(self.playersheetWalk, self.x,self.y, 0, 1, 1, 0, 0)
+    if self.dir == 1 then
+        self.Walkanimation:draw(self.playersheetWalk, self.x,self.y, 0, 1, 1, 0, 0,0,0)
+    else
+        self.Walkanimation:draw(self.playersheetWalk, self.x+self.w,self.y, 0, self.dir*1, 1, 0, 0,0,0)
+    end
     love.graphics.setColor(self.color)
     love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
     

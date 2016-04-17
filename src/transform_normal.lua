@@ -22,8 +22,15 @@ function normal:move(x,y)
     local dst_y = self.y + y*self.speed
     self.x,self.y = self.game.world:move(self, dst_x,dst_y)
 end
-function normal:shoot(angle)
-    self.game.spawn(bullet:load(self.game,self.x+self.w,self.y,angle))
+function normal:shoot()
+    if self.dir == 1 then
+        angle = 0
+        self.game.spawn(bullet:load(self.game,self.x+self.w,self.y,angle))
+    else
+        angle = math.pi
+        self.game.spawn(bullet:load(self.game,self.x-10,self.y,angle))
+
+    end
 end
 
 function normal:draw()

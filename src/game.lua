@@ -10,11 +10,13 @@ function game.load()
     song:play()
     game.world = bump.newWorld(10)
     game.spawn(cron.after(music.offset, game.spawn, cron.every(1/(music.bpm/60),game.beat)))
-    local W,H = love.graphics.getDimensions()
-    game.floor = H*3/4
+    game.W,game.H = love.graphics.getDimensions()
+    game.floor = game.H*3/4
     map.load()
-    game.spawn(player:load(game,0,game.floor-10))
+    game.spawn(player:load(game,game.W/2,game.floor-10))
     game.enemy_count = 0
+    game.spawn_rate = 0.5
+    game.wave_rate = 1
     game.waves = {5,10,15}
     game.curr_wave = 1
     game.next_wave()
@@ -24,13 +26,22 @@ function game.next_wave()
         game.wave(game.waves[game.curr_wave])
         game.curr_wave = game.curr_wave + 1
     else
-        change_scene("victory")
+        print "victory"
+        --change_scene("victory")
     end
+end
+function game.create_enemy()
+    local dice = math.random()
+    if dice < 0.5 then
+        game.spawn(enemy:load(game,game.W,game.floor-10,1))
+    else
+        game.spawn(enemy:load(game,0,game.floor-10,-1))
+    end
+    game.enemy_count = game.enemy_count + 1
 end
 function game.wave(num_enemies)
     for i=1,num_enemies do
-        game.spawn(enemy:load(game,400+60*i,game.floor-10))
-        game.enemy_count = game.enemy_count + 1
+        game.spawn(cron.after(game.spawn_rate,game.create_enemy))
     end
 end
 function game.spawn(obj)
@@ -42,6 +53,9 @@ function game.remove(obj)
         if obj == v then 
             if obj.name == "enemy" then
                 game.enemy_count = game.enemy_count - 1
+                if game.enemy_count == 0 then
+                    game.spawn(cron.after(game.wave_rate,game.next_wave))
+                end
             end
             game.objs[k] = nil 
         end 
@@ -49,9 +63,6 @@ function game.remove(obj)
 end
 
 function game.update(dt)
-    if game.enemy_count == 0 then
-        game.next_wave()
-    end
     foreach(game.objs,function(x) if x.update then x:update(dt) end end)
 end
 function game.keypressed(key)
