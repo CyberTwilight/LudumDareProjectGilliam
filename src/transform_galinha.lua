@@ -1,4 +1,4 @@
-local bullet = require "src/bullet"
+local bullet = require "src/bullet_player"
 local galinha = {}
 function galinha:load()
     self.color = {0,255,0}

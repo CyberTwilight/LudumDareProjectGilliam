@@ -1,4 +1,4 @@
-local bullet = require "src/bullet"
+local bullet = require "src/bullet_player"
 local anim8 = require "lib/anim8"
 local normal = {}
 

@@ -1,4 +1,4 @@
-local bullet = require "src/bullet"
+local bullet = require "src/bullet_player"
 local perneta = {}
 function perneta:load()
     self.color = {255,0,0}

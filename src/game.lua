@@ -12,7 +12,9 @@ function game.load()
     game.world = bump.newWorld(10)
     game.spawn(cron.after(music.offset, game.spawn, cron.every(1/(music.bpm/60),game.beat)))
     game.W,game.H = love.graphics.getDimensions()
-    game.floor = game.H*3/4
+    game.floor = game.H
+    game.roof = 3*game.H/4
+    game.play_area = game.floor - game.roof
     map.load()
     game.spawn(player:load(game,game.W/2,game.floor-10))
     game.enemy_count = 0
@@ -35,9 +37,9 @@ end
 function game.create_enemy(typ)
     local dice = math.random()
     if dice < 0.5 then
-        game.spawn(typ:load(game,game.W,game.floor-10,1))
+        game.spawn(typ:load(game,game.W,dice*game.play_area+game.roof,1))
     else
-        game.spawn(typ:load(game,0,game.floor-10,-1))
+        game.spawn(typ:load(game,0,dice*game.play_area+game.roof,-1))
     end
     game.enemy_count = game.enemy_count + 1
 end

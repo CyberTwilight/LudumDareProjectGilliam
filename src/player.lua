@@ -1,4 +1,3 @@
-local bullet = require "src/bullet"
 local anim8 = require "lib/anim8"
 local cron = require "lib/cron"
 
@@ -17,7 +16,7 @@ function player:load(game,x,y)
     o.scalex = o.w/o.sprite_w
     o.scaley = o.h/o.sprite_h
     o.x = x
-    o.y = y
+    o.y = y-o.h
     o.speed = 10
     o.cooldown = 0.5
     o.cooldown_var = false
