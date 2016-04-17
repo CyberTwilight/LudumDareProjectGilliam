@@ -19,7 +19,7 @@ function aim:load(game,x,y)
     o.x = x
     o.y = y
     o.game = game
-    o.game.world:add(o,o.x,o.y,o.r,o.r)
+--    o.game.world:add(o,o.x,o.y,o.r,o.r)
     
     return o
 end
@@ -29,7 +29,8 @@ function aim:move(x,y)
 end
 
 function aim:mousemoved(x, y, dx, dy)
-    self:move(x,y)
+    self.x,self.y = x,y
+    --self:move(x,y)
 end
 
 

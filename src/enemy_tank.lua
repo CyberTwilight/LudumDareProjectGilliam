@@ -24,7 +24,7 @@ function enemy:load(game,x,y,dir)
     o.life = 2
     o.hit_var = false
     o.x = x
-    o.y = y
+    o.y = y - o.h
     o.recover = 0.2
     o.speed = 10
     o.color = {math.random(0,255),math.random(0,100),math.random(0,100)}

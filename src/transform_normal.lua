@@ -20,6 +20,7 @@ end
 function normal:move(x,y,filter)
     local dst_x = self.x + x*self.speed
     local dst_y = self.y + y*self.speed
+    dst_y = clamp(dst_y,self.game.roof-self.h,self.game.floor-self.h)
     self.x,self.y = self.game.world:move(self, dst_x,dst_y,filter)
 end
 function normal:shoot(angle)
