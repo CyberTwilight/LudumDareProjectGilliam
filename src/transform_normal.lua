@@ -5,9 +5,9 @@ local normal = {}
 function normal:load()
   
     self.color = {0,0,255}
-    self.playersheetWalk = love.graphics.newImage('assests/playersheet1.png')
-    local playeranimeWalk = anim8.newGrid(201, 278, self.playersheetWalk:getWidth(), self.playersheetWalkgetHeight())
-    Walkanimation = anim8.newAnimation(g('1-28',1), 1/28)
+    self.playersheetWalk = love.graphics.newImage('assets/playersheet1.png')
+    local playeranimeWalk = anim8.newGrid(201, 278, self.playersheetWalk:getWidth(), self.playersheetWalk:getHeight())
+    --Walkanimation = anim8.newAnimation(g('1-28',1), 1/28)
 end
 function normal:move(x,y)
     local dst_x = self.x + x*self.speed

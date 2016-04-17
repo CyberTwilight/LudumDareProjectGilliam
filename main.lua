@@ -18,6 +18,9 @@ end
 function love.keypressed(key)
     scenes[scene].keypressed(key)
 end
+function love.keyreleased(key)
+    scenes[scene].keyreleased(key)
+end
 function love.draw()
     scenes[scene].draw()
 end

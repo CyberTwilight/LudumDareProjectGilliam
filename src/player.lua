@@ -2,6 +2,7 @@ local bullet = require "src/bullet"
 local anim8 = require "lib/anim8"
     
 local player = {}
+player.keylist = {}
 function player:load(game,x,y)
     local o = {}
     setmetatable(o,self)
@@ -29,17 +30,30 @@ function player:shoot()
 end
 
 function player:keypressed(key)
+   addToSet(player.keylist, key)
+   
+end
+
+function player:keyreleased(key)
+    removeFromSet(player.keylist, key)
+end
+
+function player:update(dt)
+  
+  local speed = dt * 10
     local control ={
-        a = function() self:move(-1,0) end,
-        w = function() self:move(0,-1) end,
-        s = function() self:move(0,1) end,
-        d = function() self:move(1,0) end,
+        a = function() self:move(-speed,0) end,
+        w = function() self:move(0,-speed) end,
+        s = function() self:move(0,speed) end,
+        d = function() self:move(speed,0) end,
         space = function() self:shoot() end
     }
-    if control[key] then control[key]() end
-end
-function player:update(dt)
-    self.transforms[self.transform]:update(dt)
+    
+    for key,v in pairs(player.keylist) do
+      if control[key] then control[key]() end 
+    end    
+    
+    --self.transforms[self.transform]:update(dt)
 end
 function player:change(new)
     self.transform = new
@@ -52,6 +66,6 @@ end
 function player:draw()
     love.graphics.setColor(self.color)
     love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
-    self.transforms[self.transform]:draw()
+    --self.transforms[self.transform]:draw()
 end
 return player

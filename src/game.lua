@@ -29,6 +29,9 @@ end
 function game.keypressed(key)
     foreach(game.objs,function(x) if x.keypressed then x:keypressed(key) end end)
 end
+function game.keyreleased(key)
+    foreach(game.objs,function(x) if x.keyreleased then x:keyreleased(key) end end)
+end
 function game.beat()
     foreach(game.objs,function(x) if x.beat then x:beat() end end)
 end
