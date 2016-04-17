@@ -132,15 +132,16 @@ function player:draw()
     else
         self.Walkanimation:draw(self.playersheetWalk, self.x+self.w,self.y, 0, self.dir*self.scalex, self.scaley, 0, 0,0,0)
     end
-    love.graphics.setColor(self.color)
-    love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
-    
-    if self.dir == 1 then -- marcacao da arma
-    love.graphics.circle("fill",self.x + self.w,self.y + 50, 10)
-  else
-    love.graphics.circle("fill",self.x,self.y + 50, 10)
+    if __debug then
+        love.graphics.setColor(self.color)
+        love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
+        
+        if self.dir == 1 then -- marcacao da arma
+        love.graphics.circle("fill",self.x + self.w,self.y + 50, 10)
+      else
+        love.graphics.circle("fill",self.x,self.y + 50, 10)
+        end
     end
-    
     
     --self.transforms[self.transform]:draw()
 end
