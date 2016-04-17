@@ -32,6 +32,12 @@ end
 function game.keyreleased(key)
     foreach(game.objs,function(x) if x.keyreleased then x:keyreleased(key) end end)
 end
+function game.mousepressed( x, y, button, istouch )
+  foreach(game.objs,function(o) if o.mousepressed then o:mousepressed(x, y, button, istouch) end end)
+end
+function game.mousereleased( x, y, button, istouch )
+  foreach(game.objs,function(o) if o.mousereleased then o:mousereleased(x, y, button, istouch) end end)
+end  
 function game.beat()
     foreach(game.objs,function(x) if x.beat then x:beat() end end)
 end

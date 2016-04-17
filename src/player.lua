@@ -38,6 +38,15 @@ function player:keyreleased(key)
     removeFromSet(player.keylist, key)
 end
 
+function player:mousepressed(x, y, button, istouch)
+   addToSet(player.keylist, "m"..button)
+   
+end
+
+function player:mousereleased(x, y, button, istouch)
+    removeFromSet(player.keylist, "m"..button)
+end
+
 function player:update(dt)
   
   local speed = dt * 10
@@ -46,7 +55,8 @@ function player:update(dt)
         w = function() self:move(0,-speed) end,
         s = function() self:move(0,speed) end,
         d = function() self:move(speed,0) end,
-        space = function() self:shoot() end
+        space = function() self:shoot() end,
+        m1 = function() self:shoot()end
     }
     
     for key,v in pairs(player.keylist) do
