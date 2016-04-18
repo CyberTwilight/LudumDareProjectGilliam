@@ -15,6 +15,7 @@ function bullet:load(game,x,y,angle)
     self.__index = self
     
     o.name = "bullet"
+    o.art = love.graphics.newImage("assets/bala.png")
     o.w = 10
     o.h = 10
     o.x = x
@@ -55,7 +56,8 @@ function bullet:update(dt)
 end
 
 function bullet:draw()
-    love.graphics.setColor(self.color)
-    love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
+    love.graphics.draw(self.art,self.x,self.y,0,0.2,0.3)
+    --love.graphics.setColor(self.color)
+    --love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
 end
 return bullet

@@ -13,7 +13,7 @@ end
 
 function normal:update(dt)
   
-  Walkanimation:update(dt)
+  --Walkanimation:update(dt)
   
   
 end

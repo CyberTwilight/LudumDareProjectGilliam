@@ -15,7 +15,7 @@ function game.load()
     game.spawn(cron.after(music.offset, game.spawn, cron.every(1/(music.bpm/60),game.beat)))
     game.W,game.H = love.graphics.getDimensions()
     game.floor = game.H
-    game.roof = 3*game.H/4
+    game.roof = 3*game.H/4-150
     game.play_area = game.floor - game.roof
     map.load()
     
@@ -23,7 +23,7 @@ function game.load()
     game.spawn(player:load(game,game.W/2,game.floor-10, playeraim))
     game.spawn(playeraim)
     game.enemy_count = 0
-    game.spawn_rate = 0.5
+    game.spawn_rate = 0.8
     game.wave_rate = 1
     game.waves = {{5,0},{10,1},{15,3},{20,5},{25,10}}
     game.curr_wave = 1

@@ -1,3 +1,4 @@
+local anim8 = require "lib/anim8"
 
 local bullet = {}
 
@@ -15,8 +16,8 @@ function bullet:load(game,x,y,angle)
     self.__index = self
     
     o.name = "bullet_player"
-    o.w = 10
-    o.h = 10
+    o.w = 20
+    o.h = 20
     o.x = x
     o.y = y + 50
     o.angle = angle
@@ -24,6 +25,11 @@ function bullet:load(game,x,y,angle)
     o.color = {math.random(0,100),math.random(0,255),math.random(0,100)}
     o.game = game 
     o.game.world:add(o,o.x,o.y,o.w,o.h)
+    
+    terrysheet = love.graphics.newImage('assets/TerryShot2.png')
+    local terryshot = anim8.newGrid(142,142, terrysheet:getWidth(), terrysheet:getHeight())
+    o.terryshot = anim8.newAnimation(terryshot('1-7','1-4'), 1/28)
+    
     return o
 end
 function bullet:beat()
@@ -36,6 +42,7 @@ function bullet:die()
     --self = nil
 end
 function bullet:update(dt)
+   
     local dst_x = self.x + math.cos(self.angle)*self.speed*dt
     local dst_y = self.y + math.sin(self.angle)*self.speed*dt
     local cols = {}
@@ -52,10 +59,12 @@ function bullet:update(dt)
     if dead then
         self:die()
     end
+    self.terryshot:update(dt)
 end
 
 function bullet:draw()
-    love.graphics.setColor(self.color)
-    love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
+    self.terryshot:draw(terrysheet, self.x,self.y, 0, 0.25,0.25, 0, 0,0,0)
+    --love.graphics.setColor(self.color)
+    --love.graphics.rectangle("fill",self.x,self.y,self.w,self.h)
 end
 return bullet

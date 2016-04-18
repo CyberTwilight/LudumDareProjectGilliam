@@ -93,16 +93,10 @@ function player:update(dt)
   end
   local speed = dt * 10
     local control ={
-        a = function() 
-            self.dir = -1
-            self:move(-speed,0) 
-        end,
+        a = function() self.dir = -1 self:move(-speed,0) end,
         w = function() self:move(0,-speed) end,
         s = function() self:move(0,speed) end,
-        d = function() 
-            self.dir = 1
-            self:move(speed,0) 
-        end,
+        d = function() self.dir = 1 self:move(speed,0) end,
         space = function() self:shoot() end,
         m1 = function() self:shoot() end
     }
@@ -112,6 +106,7 @@ function player:update(dt)
     end    
     
     self.Walkanimation:update(dt)
+
     --self.transforms[self.transform]:update(dt)
 end
 function player:change(new)
