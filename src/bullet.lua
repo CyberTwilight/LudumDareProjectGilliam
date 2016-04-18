@@ -2,9 +2,10 @@ local bullet = {}
 
 local bulletFilter = function(item, other)
   if     other.name == "bullet"   then return 'cross'
-  elseif other.name == "player"   then return 'cross'
+  elseif other.name == "bullet_player"   then return 'cross'
+  elseif other.name == "player"   then return 'touch'
   elseif other.name == "aim"   then return 'cross'
-  elseif other.name == "enemy"   then return 'touch'
+  elseif other.name == "enemy"   then return 'cross'
   end
   -- else return nil  
 end
