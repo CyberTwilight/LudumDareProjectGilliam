@@ -136,8 +136,7 @@ function player:draw()
       else
         love.graphics.circle("fill",self.x,self.y + 50, 10)
         end
-    end
-    
+    end    
     --self.transforms[self.transform]:draw()
 end
 return player
