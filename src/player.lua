@@ -35,15 +35,19 @@ function player:load(game,x,y,playeraim)
     o.transforms = {require"src/transform_normal",require"src/transform_galinha",require"src/transform_perneta"}
     o.game.world:add(o,o.x,o.y,o.w,o.h)
     o:change(1)
-    
+    o.shot = false
+    --[[
     o.playersheetWalk = love.graphics.newImage('assets/playersheet1.png')
     local playeranimeWalk = anim8.newGrid(o.sprite_w,o.sprite_h, playersheetWalk:getWidth(), playersheetWalk:getHeight())
     o.Walkanimation = anim8.newAnimation(playeranimeWalk('1-7','1-4'), 1/28)
+    --]]
     
     return o
+    
 end
 
 function player:move(x,y)  
+  
     self.transforms[self.transform].move(self,x,y, playerFilter)
 end
 function player:shoot()
@@ -105,9 +109,7 @@ function player:update(dt)
       if control[key] then control[key]() end 
     end    
     
-    self.Walkanimation:update(dt)
-
-    --self.transforms[self.transform]:update(dt)
+     self.transforms[self.transform]:update(dt)
 end
 function player:change(new)
     self.transform = new
@@ -116,18 +118,14 @@ end
 function player:beat()
     self.beats = self.beats + 1
     if self.beats == 8 then
-        self:change(math.random(1,#self.transforms))
+        self:change(math.random(1,3))
         self.beats = 1
     end
 end
 
 function player:draw()
-    if self.dir == 1 then
-        self.Walkanimation:draw(self.playersheetWalk, self.x,self.y, 0, self.scalex, self.scaley, 0, 0,0,0)
-    else
-        self.Walkanimation:draw(self.playersheetWalk, self.x+self.w,self.y, 0, self.dir*self.scalex, self.scaley, 0, 0,0,0)
-    end
-    if __debug then
+    
+    if 1 then
         love.graphics.setColor(self.color)
         love.graphics.rectangle("line",self.x,self.y,self.w,self.h)
         
@@ -137,6 +135,6 @@ function player:draw()
         love.graphics.circle("fill",self.x,self.y + 50, 10)
         end
     end    
-    --self.transforms[self.transform]:draw()
+    self.transforms[self.transform]:draw(self.dir,self.x,self.y,self.scalex,self.scaley,self.w,self.shot)
 end
 return player
