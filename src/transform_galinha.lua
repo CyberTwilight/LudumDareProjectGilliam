@@ -3,10 +3,15 @@ local anim8 = require "lib/anim8"
 local galinha = {}
 function galinha:load()
     --self.color = {0,255,0}
-    
-    playersheetWalk = love.graphics.newImage('assets/Galinha_WALK.png')
-    playeranimeWalk = anim8.newGrid(317, 426, playersheetWalk:getWidth(), playersheetWalk:getHeight())
-    Walkanimation = anim8.newAnimation(playeranimeWalk('1-10','1-3'), 1/30)
+    print(self)
+    print(self.transform_data)
+    if not self.transform_data[self.transform] then    
+        local t = {}
+        t.playersheetWalk = love.graphics.newImage('assets/Galinha_WALK.png')
+        t.playeranimeWalk = anim8.newGrid(317, 426, t.playersheetWalk:getWidth(), t.playersheetWalk:getHeight())
+        t.Walkanimation = anim8.newAnimation(t.playeranimeWalk('1-10','1-3'), 1/30)
+        self.transform_data[self.transform] = t    
+    end
        
     
     
@@ -21,7 +26,7 @@ function galinha:move(x,y,filter)
 end
 function galinha:update(dt)
   
-  Walkanimation:update(dt)
+  self.transform_data[self.transform].Walkanimation:update(dt)
   
 end
 function galinha:shoot(angle)
@@ -31,16 +36,18 @@ function galinha:shoot(angle)
         self.game.spawn(bullet:load(self.game,self.x-10,self.y,angle))
     end
 end
-function galinha:draw(dir,x,y,scalex,scaley,w,shot)
-  if dir == 1 then
-    if shot == false then
-       Walkanimation:draw(playersheetWalk, x-50,y-50, 0, scalex, scaley, 0, 0,0,0)
+function galinha:draw()
+  local img = self.transform_data[self.transform].playersheetWalk
+  local anim = self.transform_data[self.transform].Walkanimation
+  if self.dir == 1 then
+    if self.shot == false then
+       anim:draw(img, self.x-50,self.y-50, 0, self.scalex, self.scaley, 0, 0,0,0)
        --ARMWalkanimation:draw(playersheetWalkARM, x,y, 0, scalex, scaley, 0, 0,0,0)
-       elseif shot == true then
+       elseif self.shot == true then
          --Atkanimation:draw(playersheetATK, x,y, 0, scalex, scaley, 0, 0,0,0)
     end
   else
-       Walkanimation:draw(playersheetWalk, x+w+50,y-50, 0, dir*scalex,scaley, 0, 0,0,0)
+       anim:draw(img, self.x+self.w+50,self.y-50, 0, self.dir*self.scalex,self.scaley, 0, 0,0,0)
        --ARMWalkanimation:draw(playersheetWalkARM,  x+w,y, 0, dir*scalex,scaley, 0, 0,0,0)
   end
   

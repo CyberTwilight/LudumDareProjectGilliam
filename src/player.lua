@@ -33,8 +33,11 @@ function player:load(game,x,y,playeraim)
     o.game = game
     o.keylist = {}
     o.transforms = {require"src/transform_normal",require"src/transform_galinha",require"src/transform_perneta"}
+    o.transform_data = {}
     o.game.world:add(o,o.x,o.y,o.w,o.h)
-    o:change(1)
+    --for i in ipairs(o.transforms) do
+    --    o:change(i)
+    --end
     o.shot = false
     --[[
     o.playersheetWalk = love.graphics.newImage('assets/playersheet1.png')
@@ -76,19 +79,19 @@ function player:shoot()
 end
 
 function player:keypressed(key)
-   if key ~= nil then addToSet(self.keylist, key) end
+   if key then addToSet(self.keylist, key) end
 end
 
 function player:keyreleased(key)
-    if key ~= nil then removeFromSet(self.keylist, key) end
+    if key then removeFromSet(self.keylist, key) end
 end
 
 function player:mousepressed(x, y, button, istouch)
-    if button ~= nil then addToSet(self.keylist, "m"..button) end
+    if button then addToSet(self.keylist, "m"..button) end
 end
 
 function player:mousereleased(x, y, button, istouch)
-    if button ~= nil then removeFromSet(self.keylist, "m"..button) end
+    if button then removeFromSet(self.keylist, "m"..button) end
 end
 
 function player:update(dt)
@@ -109,7 +112,7 @@ function player:update(dt)
       if control[key] then control[key]() end 
     end    
     
-     self.transforms[self.transform]:update(dt)
+     self.transforms[self.transform].update(self,dt)
 end
 function player:change(new)
     self.transform = new
@@ -118,7 +121,7 @@ end
 function player:beat()
     self.beats = self.beats + 1
     if self.beats == 8 then
-        self:change(math.random(1,3))
+        self:change(math.random(1,#self.transforms))
         self.beats = 1
     end
 end
@@ -135,6 +138,6 @@ function player:draw()
         love.graphics.circle("fill",self.x,self.y + 50, 10)
         end
     end    
-    self.transforms[self.transform]:draw(self.dir,self.x,self.y,self.scalex,self.scaley,self.w,self.shot)
+    self.transforms[self.transform].draw(self)
 end
 return player

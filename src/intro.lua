@@ -44,11 +44,14 @@ function intro.load()
     W,H = love.graphics.getDimensions()
     intro.button1 = { name  = "button1"} 
     intro.mouse = { name = "mouse"} 
-    b1 = { h = rockonart:getHeight() , w = rockonart:getWidth()}
+    intro.button1.h = rockonart:getHeight() 
+    intro.button1.w = rockonart:getWidth()
+    --intro.b1.sx = W*b1.w/10
+    --intro.b1.sy = H*b1.h/12 
     dir = 1
     tb = false
     
-    introworld:add(intro.button1, 850,500, b1.w,b1.h)
+    introworld:add(intro.button1, 850*W/1366,500*H/768, intro.button1.w,intro.button1.h)
     introworld:add(intro.mouse,50,50,20,20)
     
     m1x,m1y,m1w,m1h = introworld:getRect(intro.mouse)
@@ -85,7 +88,7 @@ function intro.draw()
       love.graphics.print("test",200,200)
     end
     love.graphics.draw(titleart,0,0)
-    love.graphics.draw(rockonart,ABX,ABY)
+    love.graphics.draw(rockonart,ABX,ABY)--,0,b1.sx,b1.sy)
     
     --love.graphics.setColor(175,125,215)
     love.graphics.draw(terrycursor,AMX-25,AMY-25,0,0.1,0.1)
