@@ -38,6 +38,7 @@ function player:load(game,x,y,playeraim)
     --for i in ipairs(o.transforms) do
     --    o:change(i)
     --end
+    o:change(1)
     o.shot = false
     --[[
     o.playersheetWalk = love.graphics.newImage('assets/playersheet1.png')
